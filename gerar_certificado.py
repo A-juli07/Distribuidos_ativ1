@@ -1,4 +1,4 @@
-from cryptography import x509
+from cryptography import x509 #Utiliza a biblioteca cryptography para criar uma chave privada RSA de 2048 bits com expoente público 65537
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -12,11 +12,12 @@ private_key = rsa.generate_private_key(
     backend=default_backend()
 )
 
-# Cria certificado autoassinado
+# Cria certificado autoassinado, definindo os campos subject e issuer usando NameOID.COMMON_NAME = "localhost"
 subject = issuer = x509.Name([
     x509.NameAttribute(NameOID.COMMON_NAME, "localhost"),
 ])
 
+#O certificado é construído com data de início (not_valid_before) igual ao momento atual (UTC) e expiração em 365 dias
 cert = x509.CertificateBuilder().subject_name(
     subject
 ).issuer_name(
@@ -34,7 +35,7 @@ cert = x509.CertificateBuilder().subject_name(
     critical=False,
 ).sign(private_key, hashes.SHA256(), default_backend())
 
-# Salva chave privada e certificado
+# Grava key.pem (a chave privada) e cert.pem (o certificado) no diretório de trabalho atual, ambos no formato PEM:
 with open("key.pem", "wb") as f:
     f.write(private_key.private_bytes(
         encoding=serialization.Encoding.PEM,

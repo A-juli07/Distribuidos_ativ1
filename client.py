@@ -1,6 +1,6 @@
 import socket
 import threading
-import tkinter as tk
+import tkinter as tk # Interface gráfica em Tkinter
 from tkinter import scrolledtext, messagebox, simpledialog
 import ssl  # Importação necessária para SSL
 
@@ -38,9 +38,11 @@ class ClienteChat:
         self.iniciar_interface()
         self.verificar_nome()
 
+        # Cria uma thread em background (self.receber_thread) para tratar mensagens recebidas do servidor (método receber).
         self.receber_thread = threading.Thread(target=self.receber)
         self.receber_thread.daemon = True
         self.receber_thread.start()
+        # Iniciando o loop de eventos do Tkinter
         self.janela.mainloop()
 
     def verificar_senha(self):
@@ -51,17 +53,16 @@ class ClienteChat:
             resultado = self.cliente_ssl.recv(1024).decode()  # Usa o socket SSL
             return resultado == "SENHA_OK"
         return False
-
-    # ========== (Os métodos abaixo permanecem iguais, mas usam self.cliente_ssl) ==========
     
+
     def iniciar_interface(self):
         self.janela = tk.Tk()
         self.janela.title("Chat em Grupo (Seguro)")
 
-        self.txt_area = scrolledtext.ScrolledText(self.janela, wrap=tk.WORD, state='disabled')
+        self.txt_area = scrolledtext.ScrolledText(self.janela, wrap=tk.WORD, state='disabled') # Exibir mensagens
         self.txt_area.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
 
-        self.entrada_msg = tk.Entry(self.janela)
+        self.entrada_msg = tk.Entry(self.janela) # Digitar mensagens
         self.entrada_msg.pack(padx=10, pady=(0, 5), fill=tk.X)
         self.entrada_msg.bind("<Return>", lambda event: self.enviar_mensagem())
 
@@ -95,6 +96,8 @@ class ClienteChat:
                 messagebox.showwarning("Campo obrigatório", "Você precisa digitar um nome.")
         return nome
 
+    # Executado em thread separada. 
+    # Em loop infinito, faz self.cliente_ssl.recv(1024).decode() para obter mensagens do servidor
     def receber(self):
         while True:
             try:
@@ -104,13 +107,14 @@ class ClienteChat:
                 break
 
     def enviar_mensagem(self):
-        msg = self.entrada_msg.get()
+        msg = self.entrada_msg.get() #Obtem texto digitado
         if msg:
-            self.cliente_ssl.send(msg.encode())  # Usa o socket SSL
+            self.cliente_ssl.send(msg.encode())  # Se nao vazio, envia mensagem 
             if msg.lower() == 'sair':
                 self.sair()
-            self.entrada_msg.delete(0, tk.END)
+            self.entrada_msg.delete(0, tk.END) # Limpa o campo de texto
 
+    # area de texto como editavel
     def adicionar_mensagem(self, mensagem):
         self.txt_area.config(state='normal')
         self.txt_area.insert(tk.END, mensagem)
