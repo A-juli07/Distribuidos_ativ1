@@ -3,7 +3,7 @@
 
 ## 📡 Usar o tcpdump (ou Wireshark) no Windows
 
-No Windows, o `tcpdump` não está disponível nativamente. Use o **Wireshark** (interface gráfica) para capturar pacotes.
+No Windows, o `tcpdump` não está disponível nativamente. Usaremos o **Wireshark** (interface gráfica) para capturar pacotes.
 
 ### 📝 Passo a Passo
 
