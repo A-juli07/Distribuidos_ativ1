@@ -1,11 +1,11 @@
 # Distribuidos
 
 
-## 📡 Usar o tcpdump (ou Wireshark) no Windows
+## Usar o tcpdump (ou Wireshark) no Windows
 
 No Windows, o `tcpdump` não está disponível nativamente. Usaremos o **Wireshark** (interface gráfica) para capturar pacotes.
 
-### 📝 Passo a Passo
+### Passo a Passo
 
 #### 1. Instale o Wireshark
 Baixe em [https://www.wireshark.org](https://www.wireshark.org) e instale normalmente.
